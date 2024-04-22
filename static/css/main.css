@@ -1,0 +1,17 @@
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/backgroundimage.webp);
+    opacity: 0.3; /* Altere o valor conforme desejado */
+    z-index: -1; /* Certifique-se de que o pseudo-elemento esteja por trás do conteúdo */
+    background-size: cover;
+}
+
+input[type="submit"] {
+    z-index: 1000; /* Ajuste o valor conforme necessário */
+    color: white; 
+}
