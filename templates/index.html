@@ -38,21 +38,99 @@
 {% endblock %} {% block content %}
 <div class="container-fluid">
   <div class="container">
-    <div class="row">
+  <div class="row">
       <div
         class="col-md-12 col-xs-12 main_card"
-        style="margin-top: 150px; z-index: 10"
+        style="margin-top: 60px; z-index: 10; margin-bottom: 20px;"
       >
         <h1 class="text-center mt-4 hh" style="font-family: 'Orbitron', sans-serif; font-size: 25px;">AIJOBS - The bridge between talents and opportunities.</h1>
-        <a
+        <!-- <a
           href="/login"
           class="btn btn-lg mt-5 sign_in mx-auto d-block"
           style="z-index: 10; background-color:#0A314D"
           ><i class="fab fa-google me-4"></i>Login With Google</a
-        >
+        > -->
       </div>
     </div>
   </div>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-5 mx-auto">
+  <div id="loginForm">
+    <div class="myform form ">
+       <div class="logo mb-3">
+         <div class="col-md-12 text-center">
+          <h1>Login</h1>
+         </div>
+      </div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="color: #dd4b39;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+               <form action="/login" method="post" name="login">
+                       <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                       </div>
+                       <div class="form-group">
+                          <label for="exampleInputEmail1">Password</label>
+                          <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                       </div>
+                       <div class="form-group">
+                          <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p>
+                       </div>
+                       <div class="col-md-12 text-center ">
+                          <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                       </div>
+                       <div class="form-group">
+                          <p class="text-center">Don't have account? <a href="#" id="signup" onclick="showSignupForm()">Sign up here</a></p>
+                       </div>
+                    </form>
+             
+    </div>
+  </div>
+    <div id="signupForm" style="display:none;">
+        <div class="myform form">
+                    <div class="logo mb-3">
+                       <div class="col-md-12 text-center">
+                          <h1 >Signup</h1>
+                       </div>
+                    </div>
+                    <form action="/signup" name="registration" method="post">
+                       <div class="form-group">
+                          <label for="firstname">First Name</label>
+                          <input type="text"  name="firstname" class="form-control" id="firstname" aria-describedby="emailHelp" placeholder="Enter Firstname">
+                       </div>
+                       <div class="form-group">
+                          <label for="lastname">Last Name</label>
+                          <input type="text"  name="lastname" class="form-control" id="lastname" aria-describedby="emailHelp" placeholder="Enter Lastname">
+                       </div>
+                       <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                       </div>
+                       <div class="form-group">
+                          <label for="exampleInputEmail1">Password</label>
+                          <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                       </div>
+                       <div class="col-md-12 text-center mb-3">
+                          <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Create a account.</button>
+                       </div>
+                       <div class="col-md-12 ">
+                          <div class="form-group">
+                             <p class="text-center"><a href="" id="signin" onclick="showLoginForm()">Already have an account?</a></p>
+                          </div>
+                       </div>
+                        </div>
+                    </form>
+                 </div>
+  </div>
+</div>
 </div>
 
 {% endblock %}

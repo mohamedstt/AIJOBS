@@ -10,6 +10,9 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 import pathlib
 import requests
+from werkzeug.security import generate_password_hash, check_password_hash
+from pymongo.errors import DuplicateKeyError
+from flask import flash
 
 
 
@@ -53,13 +56,14 @@ Applied_EMP=mongo.db.Applied_EMP
 IRS_USERS = mongo.db.IRS_USERS
 JOBS = mongo.db.JOBS
 resume_uploaded = False
+mongo.db.IRS_USERS.create_index("Email", unique=True)
 from Job_post import job_post
 app.register_blueprint(job_post,url_prefix="/HR1")
 
 ###Spacy model
 print("Loading Resume Parser model...")
 nlp = spacy.load('assets/ResumeModel/output/model-best')
-print("Resune Parser model loaded")
+print("Resume Parser model loaded")
 
 
 @app.route('/')
@@ -73,12 +77,31 @@ def emp():
     else:
         return render_template("index.html", errMsg="Login First")
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
+    email = request.form.get('email').lower() 
+    password = request.form.get('password')
+
+    user = mongo.db.IRS_USERS.find_one({"Email": email})
+
+    if user:
+        if check_password_hash(user['Password'], password):
+            session['user_id'] = str(user['_id'])
+            session['user_name'] = user['firstName']
+            return redirect('/emp')
+        else:
+            flash('Invalid credentials, please try again.!', 'error')
+            return redirect(url_for('index'))
+    else:
+        return 'No user found with that email'
+
+'''def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
     return redirect(authorization_url)
 
+'''
+'''
 @app.route("/callback")
 def callback():
     flow.fetch_token(authorization_response=request.url)
@@ -106,21 +129,41 @@ def callback():
         session['user_name'] = str(id_info.get("name"))
     return redirect("/emp")
 
-
+'''
 
 @app.route('/signup', methods=["POST"])
+
 def signup():
     if request.method == 'POST':
-        name = str(request.form.get('name'))
-        email = str(request.form.get('email'))
-        password = str(request.form.get('password'))
-        status = None
-        status = IRS_USERS.insert_one({"Name":name,"Email":email,"Password":password})
-        if status == None:
-            return render_template("index.html",errMsg="Problem in user creation check data or try after some time")
-        else:
-            return render_template("index.html",successMsg="User Created Successfully!")
+        firstName = request.form.get('firstname')
+        lastName = request.form.get('lastname')
+        email = request.form.get('email').lower() 
+        password = request.form.get('password')
 
+        # Validate inputs (basic examples)
+        if not firstName or not lastName or not email or not password:
+            return render_template("index.html", errMsg="All fields are required.")
+        
+        # Password hashing
+        hashed_password = generate_password_hash(password)
+
+        # Attempt to create the user
+        try:
+            status = IRS_USERS.insert_one({
+                "firstName": firstName,
+                "lastName": lastName,
+                "Email": email,
+                "Password": hashed_password
+            })
+            # MongoDB insert_one returns an InsertOneResult, check inserted_id to confirm insertion
+            if status.inserted_id:
+                return render_template("index.html", successMsg="User Created Successfully!")
+        except DuplicateKeyError:
+            return render_template("index.html", errMsg="Email already exists. Please use a different email.")
+        except Exception as e:
+            return render_template("index.html", errMsg="Problem in user creation check data or try after some time: " + str(e))
+
+    return render_template("index.html", errMsg="Invalid request method.")
 @app.route("/logout")
 def logout():
     session.pop('user_id',None)

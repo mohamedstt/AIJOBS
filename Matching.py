@@ -46,7 +46,8 @@ def Matching():
             # if the key does not exist, create a new key-value pair
             dic_jd[label_list_jd[i]] = [text_list_jd[i]]
 
-    print("Jd dictionary:",dic_jd)
+    print("Jd dictionary:",dic_jd) 
+
     resume_workedAs = resumeFetchedData.find_one({"UserId": ObjectId(session['user_id'])}, {"WORKED AS": 1})["WORKED AS"]
     print("resume_workedAs: ",resume_workedAs)
 
