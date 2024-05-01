@@ -19,6 +19,7 @@ print("Jd Parser model loaded")
 
 def Matching():
     job_id = request.form['job_id']
+    job_details = mongo.db.JOBS.find_one({"_id": ObjectId(job_id)})
     jd_data = JOBS.find_one({"_id":ObjectId(job_id)},{"FileData":1})["FileData"]
     with io.BytesIO(jd_data) as data:
         doc = fitz.open(stream=data)
@@ -27,9 +28,7 @@ def Matching():
             text_of_jd = text_of_jd + str(page.get_text())
 
 
-    weight_jd = jd_data['WeightJD'] / 100
-    weight_experience = jd_data['WeightExperience'] / 100
-    weight_skills = jd_data['WeightSkills'] / 100
+    
 
     label_list_jd=[]
     text_list_jd = []
@@ -51,6 +50,9 @@ def Matching():
             dic_jd[label_list_jd[i]] = [text_list_jd[i]]
 
     print("Jd dictionary:",dic_jd) 
+    weight_jd = job_details.get('WeightJD', 30) / 100  
+    weight_experience = job_details.get('WeightExperience', 20) / 100  
+    weight_skills = job_details.get('WeightSkills', 50) / 100  
 
     resume_workedAs = resumeFetchedData.find_one({"UserId": ObjectId(session['user_id'])}, {"WORKED AS": 1})["WORKED AS"]
     print("resume_workedAs: ",resume_workedAs)

@@ -13,8 +13,7 @@ import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from pymongo.errors import DuplicateKeyError
 from flask import flash
-
-
+from utils import totalexperience
 
 
 def allowedExtension(filename):
@@ -303,14 +302,19 @@ def uploadResume():
                 result = None               
                 result = resumeFetchedData.insert_one({"UserId":ObjectId(session['user_id']),"Name":value_name,"LINKEDIN LINK": resume_linkedin,"SKILLS": value_skills,"CERTIFICATION": value_certificate,"WORKED AS":value_workedAs,"YEARS OF EXPERIENCE":value_experience,"Appear":0,"ResumeTitle":filename,"ResumeAnnotatedData":resume_data_annotated,"ResumeData":text_of_resume})                
                 
-                if result == None:
-                    return render_template("EmployeeDashboard.html",errorMsg="Problem in Resume Data Storage")  
+                
+                if result.inserted_id:
+                    resume_data = resumeFetchedData.find_one({"_id": result.inserted_id})
+                    if 'YEARS OF EXPERIENCE' in resume_data:
+                        resume_data['Total Experience'] = totalexperience.calculate_total_experience(resume_data['YEARS OF EXPERIENCE'])
+                    return render_template("EmployeeDashboard.html", resume_data=resume_data, successMsg="Resume Uploaded Successfully!")
+                
                 else:
-                    return render_template("EmployeeDashboard.html",successMsg="Resume Screen Successfully!!")
+                    return render_template("EmployeeDashboard.html", errorMsg="Failed to store resume data.")
             else:
-                return render_template("EmployeeDashboard.html",errorMsg="Document Type Not Allowed")
-        except:
-            print("Exception Occured")
+                return render_template("EmployeeDashboard.html", errorMsg="Invalid file type.")
+        except Exception as e:
+            return render_template("EmployeeDashboard.html", errorMsg=str(e))
     else:
         return render_template("index.html", errMsg="Login First")
 
@@ -375,7 +379,10 @@ def empSearch():
                 cnt += 1
             print("len", len(selectedResumes))
             return render_template("CompanyDashboard.html",len = len(selectedResumes), data = selectedResumes)
-           
+        
+
+if __name__ == '__main__':
+    app.run(debug=True)    
 
 if __name__=="__main__":
     app.run(debug=True)
