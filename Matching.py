@@ -27,6 +27,10 @@ def Matching():
             text_of_jd = text_of_jd + str(page.get_text())
 
 
+    weight_jd = jd_data['WeightJD'] / 100
+    weight_experience = jd_data['WeightExperience'] / 100
+    weight_skills = jd_data['WeightSkills'] / 100
+
     label_list_jd=[]
     text_list_jd = []
     dic_jd = {}
@@ -125,9 +129,9 @@ def Matching():
         else:
             jdpost_similarity = 0
 
-    jdpost_similarity = jdpost_similarity * 0.3
+    jdpost_similarity = jdpost_similarity * weight_jd
     print("jd_post_simiarity: ", jdpost_similarity)
-    experience_similarity = experience_similarity * 0.2
+    experience_similarity = experience_similarity * weight_experience
     print("Experiece Similarity: ", experience_similarity)
 
 
@@ -153,7 +157,7 @@ def Matching():
                     break
 
         skills_similarity =1 - ((len(job_description_skills) - count)/ len(job_description_skills))
-        skills_similarity = skills_similarity * 0.5
+        skills_similarity = skills_similarity * weight_skills
         print("SKills Matched", skills_similarity)
     else:
         skills_similarity = 0

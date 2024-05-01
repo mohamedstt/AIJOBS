@@ -131,6 +131,30 @@ content %}
                   />
                   <label for="SalaryInput">Salary:</label>
                 </div>
+                <div class="container my-4">
+                  <div class="row">
+                    <div class="col-12">
+                <div class="row mb-3">
+                  <label for="weight_jd" class="col-md-4 col-form-label">Weight for Job Description(%):</label>
+                  <div class="col-md-8 d-flex justify-content-center">
+                    <input type="number" class="form-control" id="weight_jd" name="weight_jd" value="46" min="0" max="100" required onchange="updateWeights('weight_jd')">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="weight_experience" class="col-md-4 col-form-label">Weight for Experience(%):</label>
+                  <div class="col-md-8 d-flex justify-content-center">
+                    <input type="number" class="form-control" id="weight_experience" name="weight_experience" value="20" min="0" max="100" required onchange="updateWeights('weight_experience')">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="weight_skills" class="col-md-4 col-form-label">Weight for Skills(%):</label>
+                  <div class="col-md-8 d-flex justify-content-center">
+                    <input type="number" class="form-control" id="weight_skills" name="weight_skills" value="34" min="0" max="100" required onchange="updateWeights('weight_skills')">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
                 <div class="form-floating mb-3">
                   <input
                     type="date"

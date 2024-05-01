@@ -56,6 +56,10 @@ def ADD_JOB():
         company = str(request.form.get('company'))
         last_date = str(request.form.get('last_date'))
         salary = str(request.form.get('salary'))
+        weight_jd = float(request.form.get('weight_jd', 0.3))  # Valor padrão se não especificado
+        weight_experience = float(request.form.get('weight_experience', 0.2))
+        weight_skills = float(request.form.get('weight_skills', 0.5))
+
         filename = secure_filename(file.filename)
         jd_id = ObjectId()
         path = os.path.join(UF,str(jd_id))
@@ -68,7 +72,7 @@ def ADD_JOB():
 
 
         result = None     
-        result = JOBS.insert_one({"_id":jd_id,"Job_Profile":job_profile,"Job_Description":fetchedData,"CompanyName":company,"LastDate":last_date,"CreatedAt":datetime.now(),"Job_description_file_name":filename,"Salary":salary})
+        result = JOBS.insert_one({"_id":jd_id,"Job_Profile":job_profile,"Job_Description":fetchedData,"CompanyName":company,"LastDate":last_date,"CreatedAt":datetime.now(),"Job_description_file_name":filename,"Salary":salary, "WeightJD": weight_jd,"WeightExperience": weight_experience,"WeightSkills": weight_skills})
         with open(os.path.join(path, filename), "rb") as f:
             jd_data = f.read()
 

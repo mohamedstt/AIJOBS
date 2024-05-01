@@ -38,6 +38,24 @@
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('signupForm').style.display = 'block';
         }
+        function updateWeights(changed) {
+        const weightJd = document.getElementById('weight_jd');
+        const weightExperience = document.getElementById('weight_experience');
+        const weightSkills = document.getElementById('weight_skills');
+
+        let total = parseInt(weightJd.value) + parseInt(weightExperience.value) + parseInt(weightSkills.value);
+        if (total > 100) {
+            const exceeded = total - 100;
+            if (changed === 'weight_jd') {
+                weightJd.value = Math.max(0, parseInt(weightJd.value) - exceeded);
+            } else if (changed === 'weight_experience') {
+                weightExperience.value = Math.max(0, parseInt(weightExperience.value) - exceeded);
+            } else if (changed === 'weight_skills') {
+                weightSkills.value = Math.max(0, parseInt(weightSkills.value) - exceeded);
+            }
+          }
+        }
+
       </script>
     {% block styleInclude %} {% endblock %}
   </head>
