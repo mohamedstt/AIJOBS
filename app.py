@@ -320,7 +320,7 @@ def viewdetails():
     employee_id = request.form['employee_id']     
     result = resumeFetchedData.find({"UserId":ObjectId(employee_id)})     
     dt=result[0]
-    name_resume=dt['Name']
+    name_resume = dt['firstName'] 
     if name_resume is not None:
         name = name_resume
     else:
@@ -369,8 +369,8 @@ def empSearch():
             cnt = 0
 
             for i in TopEmployeers:
-                se=IRS_USERS.find_one({"_id":ObjectId(i['user_id'])},{"Name":1,"Email":1,"_id":1})
-                selectedResumes[cnt] = {"Name":se['Name'],"Email":se['Email'],"_id":se['_id']}
+                se=IRS_USERS.find_one({"_id":ObjectId(i['user_id'])},{"firstName":1,"Email":1,"_id":1})
+                selectedResumes[cnt] = {"firstName":se['firstName'],"Email":se['Email'],"_id":se['_id']}
                 se = None
                 cnt += 1
             print("len", len(selectedResumes))
