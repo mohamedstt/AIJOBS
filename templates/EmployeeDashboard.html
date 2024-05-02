@@ -28,13 +28,17 @@ block Addnav %}
       <!-- Displaying resume details if available -->
       <div class="col-xs-12 col-md-6 mt-5">
         {% if resume_data %}
-        <div>
-          <h3>Resume Details:</h3>
-          <p><strong>Name:</strong> {{ resume_data['Name'] }}</p>
-          <p><strong>Skills:</strong> {{ resume_data['SKILLS']|join(', ') }}</p>
-          <p><strong>Worked as:</strong> {{ resume_data['WORKED AS']|join(', ') }}</p>
-          <p><strong>Total Experience:</strong> {{ resume_data['Total Experience'] }}</p>
+        <div class="card card-custom bg-white border-white border-0">
+          <div class="card-body" style="overflow-y: auto">
+            <h4 class="card-title">Resume Details:</h4>
+            <p class="card-text"><strong>Name:</strong> {{ resume_data['Name'] }}</p>
+            <p class="card-text"><strong>Skills:</strong> {{ resume_data['SKILLS']|join(', ') }}</p>
+            <p class="card-text"><strong>Worked as:</strong> {{ resume_data['WORKED AS']|join(', ') }}</p>
+            <p class="card-text"><strong>Total Experience:</strong> {{ resume_data['Total Experience'] }}</p>
+          </div>
+          </div>
         </div>
+
         {% endif %}
       </div>
     </div>

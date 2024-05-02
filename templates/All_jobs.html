@@ -32,15 +32,18 @@ styleInclude %}
             <div class="card-body">
               <h5 class="card-title text-center">{{data[i]['Job_Profile']}}</h5>
               <p class="card-text text-center">
-                <strong>Company:</strong>{{data[i]['CompanyName']}}
+                <strong class="left-alignSJ">Company: </strong>
+                <div>{{data[i]['CompanyName']}}</div>
               </p>
               <p class="card-text text-center">
-                <strong>{{ data[i]['Salary'] }}</strong>
+                <strong class="left-alignSJ">Annual Salary: </strong>
+                <div>{{ data[i]['Salary'] }}</div>
               </p>
               <p class="card-text text-center">
-                <small class="text-muted">{{data[i]['LastDate']}}</small>
+                <Strong class="left-alignSJ">Last Date: </Strong>
+                <div><small class="text-muted">{{data[i]['LastDate']}}</small></div>
               </p>
-              <p class="text-center">
+              <p class="text-center d-flex justify-content-center align-items-center">
                 <button
                   onClick="showJD('{{ data[i]['job_id'] }}','{{ data[i]['Job_description_file_name']}}');"
                   class="btn btn btn-outline-info me-md-3"
