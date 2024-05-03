@@ -322,34 +322,22 @@ def uploadResume():
 @app.route('/viewdetails', methods=['POST', 'GET'])
 def viewdetails():      
     employee_id = request.form['employee_id']     
-    result = resumeFetchedData.find({"UserId":ObjectId(employee_id)})     
-    dt=result[0]
-    name_resume = dt['firstName'] 
-    if name_resume is not None:
-        name = name_resume
-    else:
-        name = None
+    result = resumeFetchedData.find_one({"UserId": ObjectId(employee_id)})
 
-    linkedin_link=dt['LINKEDIN LINK']
-    if name_resume is not None:
-        name = name_resume
-    else:
-        name = None
+    if not result:
+        return jsonify({'error': 'No data found'}), 404
+    
+    name = result.get('Name', None)
+    linkedin_link = result.get('LINKEDIN LINK', None)
+    skills = result.get('SKILLS', None)
+    certificate = result.get('CERTIFICATION', None)
 
-    skill_resume=dt['SKILLS']
-    if skill_resume is not None:
-        skills = skill_resume
-    else:
-        skills = None
-
-    certificate_resume=dt['CERTIFICATION']
-    if certificate_resume is not None:
-        certificate = certificate_resume
-    else:
-        certificate = None
-
-    return jsonify({'name':name,'linkedin_link':linkedin_link,'skills':skills,'certificate':certificate})
-
+    return jsonify({
+        'name': name,
+        'linkedin_link': linkedin_link,
+        'skills': skills,
+        'certificate': certificate
+    })
 
 @app.route("/empSearch",methods=['POST'])
 def empSearch():
@@ -357,29 +345,22 @@ def empSearch():
         category = str(request.form.get('category'))
         print(category)
         
-        TopEmployeers = None
-        job_ids = []
-        job_cursor = JOBS.find({"Job_Profile": category},{"_id": 1})
-        for job in job_cursor:
-            job_ids.append(job['_id'])
-
-        TopEmployeers = Applied_EMP.find({"job_id": {"$in": job_ids}},{"user_id": 1, "Matching_percentage": 1}).sort([("Matching_percentage", -1)])
-        # print(TopEmployeers)
-        # print(type(TopEmployeers))
-        if TopEmployeers == None:
-            return render_template("CompanyDashboard.html",errorMsg="Problem in Category Fetched")
-        else:
-            selectedResumes={}
-            cnt = 0
-
-            for i in TopEmployeers:
-                se=IRS_USERS.find_one({"_id":ObjectId(i['user_id'])},{"firstName":1,"Email":1,"_id":1})
-                selectedResumes[cnt] = {"firstName":se['firstName'],"Email":se['Email'],"_id":se['_id']}
-                se = None
-                cnt += 1
-            print("len", len(selectedResumes))
-            return render_template("CompanyDashboard.html",len = len(selectedResumes), data = selectedResumes)
+        job_cursor = JOBS.find({"Job_Profile": category}, {"_id": 1})
+        job_ids = [job['_id'] for job in job_cursor]
         
+        TopEmployeers = Applied_EMP.find({"job_id": {"$in": job_ids}}, {"user_id": 1, "Matching_percentage": 1}).sort([("Matching_percentage", -1)])
+        
+        if TopEmployeers is None:
+            return render_template("CompanyDashboard.html", errorMsg="Problem in Category Fetched")
+        
+        selectedResumes = []
+        
+        for emp in TopEmployeers:
+            se = IRS_USERS.find_one({"_id": ObjectId(emp['user_id'])}, {"firstName": 1, "Email": 1, "_id": 1})
+            if se:
+                selectedResumes.append({"Name": se.get('firstName', 'No Name'), "Email": se.get('Email', 'No Email'), "_id": se.get('_id')})
+        
+        return render_template("CompanyDashboard.html", data=selectedResumes)
 
 if __name__ == '__main__':
     app.run(debug=True)    

@@ -69,25 +69,16 @@ Addnav %}
             </tr>
           </thead>
           <tbody>
-            {% for i in range(0,data|length) %}
-            <tr>
-              <td class="text-center">{{(i+1)}}</td>
-              <td class="text-center">{{data[i]['Name']}}</td>
-              <td class="text-center">{{data[i]['Email']}}</td>
-              <td>
-                <input
-                  type="button"
-                  name="view"
-                  value="View"
-                  id="{{data[i]['_id']}}"
-                  data-bs-toggle="modal"
-                  data-bs-target="#viewdetails"
-                  class="btn btn-secondary view_data"
-                  style="margin-left: 10%"
-                />
-              </td>
-            </tr>
-            {% endfor %}
+            {% for item in data %}
+              <tr>
+                  <td class="text-center">{{ loop.index }}</td>
+                  <td class="text-center">{{ item['Name'] }}</td>
+                  <td class="text-center">{{ item['Email'] }}</td>
+                  <td>
+                      <input type="button" name="view" value="View" id="{{ item['_id'] }}" data-bs-toggle="modal" data-bs-target="#viewdetails" class="btn btn-secondary view_data" style="margin-left: 10%" />
+                  </td>
+              </tr>
+              {% endfor %}  
           </tbody>
         </table>
       </div>
