@@ -8,16 +8,16 @@ block Addnav %}
   <div class="container">
     <div class="row">
       <div class="col-xs-12 mt-5">
-        <h2>Hello, {{ session['user_name'] }}</h2>
+        <h2>Hello! Ready to find your next job?</h2>
       </div>
     </div>
     <div class="row">
       <!-- Form for uploading resume -->
-      <div class="col-xs-12 col-md-6 mt-5">
+      <div class="col-xs-12 col-md-6 mt-5" style="display: flex; align-items: center;">
         <form action="/uploadResume" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label class="fs-4 font-weight-bold mb-3">Please Upload Your Resume Here:</label>
-            <input type="file" class="form-control form-control-lg" name="resume" accept=".pdf, .docx">
+            <input type="file" class="form-control form-control-lg" name="resume" accept=".pdf, .docx" lang="en">
             <p class="form-text fs-6 text-muted text-danger" style="text-align: right">Only .docx or .pdf file type are Allowed</p>
           </div>
           <div class="form-group mt-5">
@@ -35,6 +35,9 @@ block Addnav %}
             <p class="card-text"><strong>Skills:</strong> {{ resume_data['SKILLS']|join(', ') }}</p>
             <p class="card-text"><strong>Worked as:</strong> {{ resume_data['WORKED AS']|join(', ') }}</p>
             <p class="card-text"><strong>Total Experience:</strong> {{ resume_data['Total Experience'] }}</p>
+          </div>
+          <div class="alert alert-info" role="alert">
+            These details were extracted automatically from your uploaded resume. If you notice any discrepancies, please ensure your resume is clearly legible and consider using a standard format for better results upon resubmission.
           </div>
           </div>
         </div>

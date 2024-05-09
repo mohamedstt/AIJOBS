@@ -72,6 +72,13 @@ def index():
 @app.route('/emp')
 def emp():
     if 'user_id' in session and 'user_name' in session:
+        resume_data_id = session.get('resume_data_id')
+        if resume_data_id:
+            resume_data = resumeFetchedData.find_one({"_id": ObjectId(resume_data_id)})
+            if resume_data:
+                if 'YEARS OF EXPERIENCE' in resume_data:
+                    resume_data['Total Experience'] = totalexperience.calculate_total_experience(resume_data['YEARS OF EXPERIENCE'])
+                return render_template("EmployeeDashboard.html", resume_data=resume_data)
         return render_template("EmployeeDashboard.html")
     else:
         return render_template("index.html", errMsg="Login First")
@@ -167,6 +174,7 @@ def signup():
 def logout():
     session.pop('user_id',None)
     session.pop('user_name',None)
+    session.pop('resume_data_id', None) 
     return redirect(url_for("index"))
 
 @app.route('/HR_Homepage', methods=['GET', 'POST'])
@@ -304,6 +312,7 @@ def uploadResume():
                 
                 
                 if result.inserted_id:
+                    session['resume_data_id'] = str(result.inserted_id)
                     resume_data = resumeFetchedData.find_one({"_id": result.inserted_id})
                     if 'YEARS OF EXPERIENCE' in resume_data:
                         resume_data['Total Experience'] = totalexperience.calculate_total_experience(resume_data['YEARS OF EXPERIENCE'])
