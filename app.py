@@ -99,43 +99,8 @@ def login():
             flash('Invalid credentials, please try again.!', 'error')
             return redirect(url_for('index'))
     else:
-        return 'No user found with that email'
-
-'''def login():
-    authorization_url, state = flow.authorization_url()
-    session["state"] = state
-    return redirect(authorization_url)
-
-'''
-'''
-@app.route("/callback")
-def callback():
-    flow.fetch_token(authorization_response=request.url)
-
-    if not session["state"] == request.args["state"]:
-        abort(500)  # State does not match!
-
-    credentials = flow.credentials
-    request_session = requests.session()
-    cached_session = cachecontrol.CacheControl(request_session)
-    token_request = google.auth.transport.requests.Request(session=cached_session)
-
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token,
-        request=token_request,
-        audience=GOOGLE_CLIENT_ID
-    )
-    result = None
-    result = IRS_USERS.find_one({"Email":id_info.get("email")},{"_id":1})
-    if result == None:
-        session['user_id'] = str(IRS_USERS.insert_one({"Name":id_info.get("name"),"Email":id_info.get("email"),"Google_id":id_info.get("sub")}).inserted_id)
-        session['user_name'] = str(id_info.get("name"))
-    else:
-        session['user_id'] = str(result['_id'])
-        session['user_name'] = str(id_info.get("name"))
-    return redirect("/emp")
-
-'''
+        flash('No user found with that email.', 'error')
+        return redirect(url_for('index'))
 
 @app.route('/signup', methods=["POST"])
 
@@ -146,14 +111,11 @@ def signup():
         email = request.form.get('email').lower() 
         password = request.form.get('password')
 
-        # Validate inputs (basic examples)
         if not firstName or not lastName or not email or not password:
             return render_template("index.html", errMsg="All fields are required.")
         
-        # Password hashing
         hashed_password = generate_password_hash(password)
 
-        # Attempt to create the user
         try:
             status = IRS_USERS.insert_one({
                 "firstName": firstName,

@@ -101,7 +101,25 @@ def show_job():
             jobs[cnt] = {"job_id":i['_id'],"Job_Profile":i['Job_Profile'],"CompanyName":i['CompanyName'],"CreatedAt":i['CreatedAt'],"Job_description_file_name":i['Job_description_file_name'],'LastDate':i['LastDate'],"Salary":i['Salary']}
             cnt += 1
         return render_template("All_jobs.html",len = len(jobs), data = jobs)
+    
+@job_post.route("/delete_job", methods=["POST"])
+def delete_job():
+    try:
+        job_id = request.form.get('job_id')
+        if not job_id:
+            return jsonify({'error': 'Missing job ID'}), 400
 
+        # Tenta deletar o emprego da base de dados
+        result = JOBS.delete_one({'_id': ObjectId(job_id)})
+        if result.deleted_count == 1:
+            return jsonify({'success': 'Job successfully deleted'}), 200
+        else:
+            return jsonify({'error': 'Job not found'}), 404
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return jsonify({'error': 'An error occurred while deleting the job'}), 500
+    
 @job_post.route("/apply_job",methods=["POST"])
 def APPLY_JOB():
     job_id = request.form['job_id'] 
