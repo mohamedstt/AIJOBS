@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from Matching import Matching
+from controllers.Matching import Matching
 from flask import Flask
 
 # Setup a fixture for the Flask app

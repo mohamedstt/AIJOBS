@@ -3,9 +3,9 @@ from werkzeug.utils import secure_filename
 import os,fitz
 from bson.objectid import ObjectId
 import docx2txt
-from database import mongo
+from controllers.database import mongo
 from datetime import datetime
-from Matching import Matching
+from controllers.Matching import Matching
 
 
 job_post = Blueprint("Job_post", __name__, static_folder="static", template_folder="templates")

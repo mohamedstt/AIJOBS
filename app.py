@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, session, redirect, abort, jsonify
-from database import mongo
+from controllers.database import mongo
 from werkzeug.utils import secure_filename
 import os,re
 import spacy, fitz,io
@@ -56,7 +56,7 @@ IRS_USERS = mongo.db.IRS_USERS
 JOBS = mongo.db.JOBS
 resume_uploaded = False
 mongo.db.IRS_USERS.create_index("Email", unique=True)
-from Job_post import job_post
+from controllers.Job_post import job_post
 app.register_blueprint(job_post,url_prefix="/HR1")
 
 ###Spacy model

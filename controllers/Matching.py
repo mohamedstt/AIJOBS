@@ -1,8 +1,8 @@
 import spacy, fitz,io
 from flask import  session,request
-from database import mongo
+from controllers.database import mongo
 from bson.objectid import ObjectId
-from MediaWiki import get_search_results
+from controllers.MediaWiki import get_search_results
 
 
 resumeFetchedData = mongo.db.resumeFetchedData
