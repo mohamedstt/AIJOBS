@@ -61,7 +61,7 @@ app.register_blueprint(job_post,url_prefix="/HR1")
 
 ###Spacy model
 print("Loading Resume Parser model...")
-nlp = spacy.load('assets/ResumeModel/output/model-best')
+nlp = spacy.load('model/ResumeModel/output/model-best')
 print("Resume Parser model loaded")
 
 
@@ -171,8 +171,6 @@ def HR():
 @app.route('/test')
 def test():
     return "Connection Successful"
-
-
 
 
 @app.route("/uploadResume", methods=['POST'])
@@ -302,12 +300,14 @@ def viewdetails():
     linkedin_link = result.get('LINKEDIN LINK', None)
     skills = result.get('SKILLS', None)
     certificate = result.get('CERTIFICATION', None)
+    worked_as = result.get('WORKED AS', None)
 
     return jsonify({
         'name': name,
         'linkedin_link': linkedin_link,
         'skills': skills,
-        'certificate': certificate
+        'certificate': certificate,
+        'worked_as': worked_as
     })
 
 @app.route("/empSearch",methods=['POST'])
@@ -329,7 +329,11 @@ def empSearch():
         for emp in TopEmployeers:
             se = IRS_USERS.find_one({"_id": ObjectId(emp['user_id'])}, {"firstName": 1, "Email": 1, "_id": 1})
             if se:
-                selectedResumes.append({"Name": se.get('firstName', 'No Name'), "Email": se.get('Email', 'No Email'), "_id": se.get('_id')})
+                selectedResumes.append({"Name": se.get('firstName', 'No Name'), 
+                                        "Email": se.get('Email', 'No Email'), 
+                                        "_id": se.get('_id'), 
+                                        "Match": emp.get('Matching_percentage', 0)
+                                        })
         
         return render_template("CompanyDashboard.html", data=selectedResumes)
 

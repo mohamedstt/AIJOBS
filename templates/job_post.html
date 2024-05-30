@@ -139,7 +139,7 @@ content %}
                 <div class="row mb-3">
                   <label for="weight_jd" class="col-md-4 col-form-label">Weight for Job Description(%):</label>
                   <div class="col-md-8 d-flex justify-content-center">
-                    <input type="number" class="form-control" id="weight_jd" name="weight_jd" value="46" min="0" max="100" required onchange="updateWeights('weight_jd')">
+                    <input type="number" class="form-control" id="weight_jd" name="weight_jd" value="30" min="0" max="100" required onchange="updateWeights('weight_jd')">
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -151,7 +151,7 @@ content %}
                 <div class="row mb-3">
                   <label for="weight_skills" class="col-md-4 col-form-label">Weight for Skills(%):</label>
                   <div class="col-md-8 d-flex justify-content-center">
-                    <input type="number" class="form-control" id="weight_skills" name="weight_skills" value="34" min="0" max="100" required onchange="updateWeights('weight_skills')">
+                    <input type="number" class="form-control" id="weight_skills" name="weight_skills" value="50" min="0" max="100" required onchange="updateWeights('weight_skills')">
                   </div>
                 </div>
               </div>
@@ -282,12 +282,12 @@ $(document).on("click", ".send_email_top5", function () {
 function deleteJob(jobId) {
     if (confirm("Are you sure you want to delete this job? This action cannot be undone.")) {
       $.ajax({
-        url: '/HR1/delete_job',  // Ajuste o URL conforme necessário
+        url: '/HR1/delete_job',  
         type: 'POST',
         data: { job_id: jobId },
         success: function(response) {
           alert('Job deleted successfully!');
-          location.reload();  // Recarrega a página para atualizar a lista de empregos
+          location.reload();  
         },
         error: function(xhr) {
           alert('Error deleting job: ' + xhr.responseText);

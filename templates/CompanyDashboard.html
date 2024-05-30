@@ -57,21 +57,25 @@ Addnav %}
         </form>
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-12 table-responsive-sm">
         <table class="table table-bordered">
           <thead>
             <tr>
               <th class="text-center">No</th>
+              <th class="text-center">%</th>
               <th class="text-center">Name</th>
               <th class="text-center">Email</th>
               <th class="text-center">Details</th>
+
             </tr>
           </thead>
           <tbody>
             {% for item in data %}
               <tr>
                   <td class="text-center">{{ loop.index }}</td>
+                  <td class="text-center">{{ item['Match'] | round(0) | int }}</td>
                   <td class="text-center">{{ item['Name'] }}</td>
                   <td class="text-center">{{ item['Email'] }}</td>
                   <td>
@@ -144,6 +148,17 @@ Addnav %}
 
           <br />
           <tr>
+            <label>Worked AS:</label>
+            <input
+              type="text"
+              class="form-control-plaintext"
+              readonly
+              id="view_worked_as"
+            />
+          </tr>
+
+          <br />
+          <tr>
             <label>CERTIFICATION:</label>
             <input
             type="text"
@@ -182,10 +197,18 @@ Addnav %}
         $("#view_linkedin_link").val(data.linkedin_link);
         $("#view_skills").val(data.skills);
         $("#view_certificates").val(data.certificate);
+        $("#view_worked_as").val(data.worked_as);
 
       },
     });
   });
+  function showResume(resumeTittle) {
+    let features =
+      "menubar=yes,location=yes,resizable=no,scrollbars=yes,status=no,height=700,width=1000";
+    let url = "/static/uploaded_resumes/" + resumeTittle;
+
+    window.open(url, "_blank", features);
+  }
 </script>
 
 

@@ -11,7 +11,7 @@ JOBS = mongo.db.JOBS
 
 ###Spacy model
 print("Loading Jd Parser model...")
-jd_model = spacy.load('assets/JdModel/output/model-best')
+jd_model = spacy.load('model/JdModel/output/model-best')
 print("Jd Parser model loaded")
 
 
@@ -130,11 +130,6 @@ def Matching():
             jdpost_similarity = 1
         else:
             jdpost_similarity = 0
-
-    jdpost_similarity = jdpost_similarity * weight_jd
-    print("jd_post_simiarity: ", jdpost_similarity)
-    experience_similarity = experience_similarity * weight_experience
-    print("Experiece Similarity: ", experience_similarity)
 
 
 
