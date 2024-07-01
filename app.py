@@ -33,7 +33,7 @@ log.setLevel(logging.ERROR)
 
 app.secret_key = "Resume_screening"
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-GOOGLE_CLIENT_ID = "979876798487-aj9eiponlnbu62lpdl625l2p6k00ejql.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = ""
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json") #verify this
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
@@ -49,7 +49,7 @@ flow = Flow.from_client_secrets_file(
 UPLOAD_FOLDER = 'static/uploaded_resumes'
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 
-app.config['MONGO_URI']= 'mongodb+srv://admin:admin@cluster0.ya88zk7.mongodb.net/ResumeRanking'
+app.config['MONGO_URI']= ''
 
 
 mongo.init_app(app)
