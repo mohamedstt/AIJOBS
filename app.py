@@ -23,9 +23,6 @@ def allowedExtension(filename):
 def allowedExtensionPdf(filename):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in ['pdf']
 
-
-   
-
 app = Flask(__name__)
 
 log = logging.getLogger('werkzeug')
@@ -49,7 +46,7 @@ flow = Flow.from_client_secrets_file(
 UPLOAD_FOLDER = 'static/uploaded_resumes'
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 
-app.config['MONGO_URI']= ''
+app.config['MONGO_URI']= '#'
 
 
 mongo.init_app(app)
