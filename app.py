@@ -14,6 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from pymongo.errors import DuplicateKeyError
 from flask import flash
 from utils import totalexperience
+import logging
 
 
 def allowedExtension(filename):
@@ -27,6 +28,8 @@ def allowedExtensionPdf(filename):
 
 app = Flask(__name__)
 
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app.secret_key = "Resume_screening"
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -184,9 +187,9 @@ def uploadResume():
                 temp = resumeFetchedData.find_one({"UserId":ObjectId(session['user_id'])},{"ResumeTitle":1})
 
                 if temp == None:
-                    print("HELLO")
+                    print("New Resume")
                 else:
-                    print("hello")
+                    print("Document already exists with the same name ")
                     resumeFetchedData.delete_one({"UserId":ObjectId(session['user_id'])})
                     os.remove(os.path.join(app.config['UPLOAD_FOLDER'],temp['ResumeTitle']))
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))

@@ -1,0 +1,14 @@
+# Python 3.10.6
+
+Para iniciar a aplicação deve-se:
+
+Iniciar ambiente de desenvolvimento ja configurado, 
+
+1. python -m venv projectAI
+2. .\projectAI\Scripts\activate    
+3. pip install -r requirements.txt.
+
+Para iniciar o projeto: Flask Run                                                                                                           
+   
+
+
